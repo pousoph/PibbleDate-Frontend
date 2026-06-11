@@ -229,20 +229,21 @@ por teclado, sin colores hardcodeados, sin dependencias nuevas no acordadas.
 
 ---
 
-## Comandos de setup (guía)
+## Comandos
 
 ```bash
-npm create vite@latest date-blueprint -- --template react-ts
-cd date-blueprint && npm install
-npm install zustand react-hook-form zod dexie dexie-react-hooks \
-  framer-motion recharts react-router-dom
-npm install tailwindcss @tailwindcss/vite     # Tailwind v4
-# shadcn: sigue la guía oficial vigente (los pasos de init cambian):
-#   https://ui.shadcn.com/docs/installation/vite
+npm run dev      # dev server en http://localhost:5173
+npm run build    # tsc -b && vite build (falla si hay errores TS)
+npm run lint     # eslint
+npm run preview  # sirve el build de dist/
 ```
 
-Luego: pega el `index.css` del design system en `src/styles/` e impórtalo en
-`main.tsx`.
+Notas de setup (ya hecho — solo referencia):
+
+- Tailwind v4: plugin `@tailwindcss/vite` en `vite.config.ts`, sin `tailwind.config.js`.
+- shadcn: componentes en `src/shared/ui/`. Para añadir uno: `npx shadcn@latest add <nombre>`.
+  Requiere que `tsconfig.json` raíz tenga `compilerOptions.paths` con `"@/*": ["./src/*"]`
+  (además de `tsconfig.app.json`) para que el CLI resuelva el alias correctamente.
 
 ---
 
