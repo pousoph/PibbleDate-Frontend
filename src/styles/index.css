@@ -1,0 +1,183 @@
+/* =====================================================================
+   Date Blueprint — Design System Tokens
+   Tailwind v4 + shadcn/ui · light-first
+   Brief: Blush Whisper + Crimson Abyss + blanco · estética Pibbles
+   ===================================================================== */
+
+/* --- Fuentes (van antes de Tailwind) -------------------------------- */
+/* Para mejor rendimiento, mueve esto a <link> con preconnect en index.html.
+   Lo dejo como @import para que sea drop-in en un solo archivo.            */
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito+Sans:opsz,wght@6..12,400;6..12,500;6..12,600;6..12,700&display=swap');
+
+@import "tailwindcss";
+
+/* shadcn usa la variante .dark vía clase; activamos modo oscuro por clase */
+@custom-variant dark (&:is(.dark *));
+
+/* =====================================================================
+   1. TOKENS DE MARCA  (la fuente de verdad — edita aquí)
+   ===================================================================== */
+:root {
+  /* Superficies */
+  --canvas:         #FFFFFF;   /* lienzo base, light-first              */
+  --surface-soft:   #FDF4F4;   /* blush diluido, fondos de sección      */
+  --surface-blush:  #F5D0D0;   /* Blush Whisper — cards, fills suaves    */
+  --surface-deep:   #4A0011;   /* Crimson Abyss — hero/footer/acentos    */
+
+  /* Tinta (regla dura: blush NUNCA es color de texto sobre blanco) */
+  --ink:            #2A0009;   /* texto principal (crimson casi-negro)   */
+  --ink-strong:     #4A0011;   /* titulares                              */
+  --ink-muted:      #7A5560;   /* texto secundario · ~6.4:1 en blanco ✓  */
+  --on-deep:        #FDEDED;   /* texto sobre superficies crimson        */
+
+  /* Acción */
+  --brand:          #4A0011;
+  --brand-hover:    #63122A;
+
+  /* Acentos del atardecer Pibbles (con moderación) */
+  --accent-peach:   #F4A98C;
+  --accent-lilac:   #CDB8DD;
+
+  /* Semánticos (distintos de la marca: peligro ≠ identidad) */
+  --c-success:      #5E9C7E;
+  --c-warning:      #E0A458;
+  --c-danger:       #C2453A;
+  --c-info:         #8FA9D6;
+
+  /* Borde cálido (no gris neutro) */
+  --line:           #F0DCDC;
+
+  /* Forma */
+  --radius:         0.75rem;   /* 12px base · radios suaves = Pibbles    */
+
+  /* Sombras tintadas en crimson (cálidas, no negro puro) */
+  --shadow-sm:      0 1px 2px rgba(74,0,17,0.06);
+  --shadow-md:      0 4px 16px rgba(74,0,17,0.08);
+  --shadow-lg:      0 12px 32px rgba(74,0,17,0.12);
+
+  /* ---- Mapeo a variables de shadcn (LIGHT) ---- */
+  --background:            var(--canvas);
+  --foreground:            var(--ink);
+  --card:                  var(--canvas);
+  --card-foreground:       var(--ink);
+  --popover:               var(--canvas);
+  --popover-foreground:    var(--ink);
+  --primary:               var(--brand);
+  --primary-foreground:    #FFFFFF;
+  --secondary:             var(--surface-blush);
+  --secondary-foreground:  var(--ink-strong);
+  --muted:                 var(--surface-soft);
+  --muted-foreground:      var(--ink-muted);
+  --accent:                var(--surface-blush);
+  --accent-foreground:     var(--ink-strong);
+  --destructive:           var(--c-danger);
+  --destructive-foreground:#FFFFFF;
+  --border:                var(--line);
+  --input:                 var(--line);
+  --ring:                  var(--brand);
+}
+
+/* =====================================================================
+   2. MODO OSCURO  (opcional — el MVP es light-first, YAGNI)
+   Ancla en crimson como canvas + blush como tinta. Borra si no lo usas.
+   ===================================================================== */
+.dark {
+  --background:            #2A0009;
+  --foreground:            #FDEDED;
+  --card:                  #3A0512;
+  --card-foreground:       #FDEDED;
+  --popover:               #3A0512;
+  --popover-foreground:    #FDEDED;
+  --primary:               #F5D0D0;
+  --primary-foreground:    #2A0009;
+  --secondary:             #4A0011;
+  --secondary-foreground:  #FDEDED;
+  --muted:                 #3A0512;
+  --muted-foreground:      #D9A9B0;
+  --accent:                #4A0011;
+  --accent-foreground:     #FDEDED;
+  --destructive:           #E0726A;
+  --destructive-foreground:#2A0009;
+  --border:                #5A0F1E;
+  --input:                 #5A0F1E;
+  --ring:                  #F5D0D0;
+}
+
+/* =====================================================================
+   3. EXPONER TOKENS A TAILWIND v4  (genera utilidades)
+   ===================================================================== */
+@theme inline {
+  --color-background:           var(--background);
+  --color-foreground:           var(--foreground);
+  --color-card:                 var(--card);
+  --color-card-foreground:      var(--card-foreground);
+  --color-popover:              var(--popover);
+  --color-popover-foreground:   var(--popover-foreground);
+  --color-primary:              var(--primary);
+  --color-primary-foreground:   var(--primary-foreground);
+  --color-secondary:            var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted:                var(--muted);
+  --color-muted-foreground:     var(--muted-foreground);
+  --color-accent:               var(--accent);
+  --color-accent-foreground:    var(--accent-foreground);
+  --color-destructive:          var(--destructive);
+  --color-border:               var(--border);
+  --color-input:                var(--input);
+  --color-ring:                 var(--ring);
+
+  /* Acentos y semánticos como utilidades propias (bg-peach, text-success…) */
+  --color-peach:    var(--accent-peach);
+  --color-lilac:    var(--accent-lilac);
+  --color-success:  var(--c-success);
+  --color-warning:  var(--c-warning);
+  --color-info:     var(--c-info);
+
+  /* Tipografía */
+  --font-sans:    "Nunito Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Baloo 2", "Nunito Sans", ui-sans-serif, sans-serif;
+
+  /* Radios derivados */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  /* Sombras */
+  --shadow-soft-sm: var(--shadow-sm);
+  --shadow-soft-md: var(--shadow-md);
+  --shadow-soft-lg: var(--shadow-lg);
+}
+
+/* =====================================================================
+   4. CAPA BASE
+   ===================================================================== */
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  /* Titulares en Baloo — guardrail: nunca por debajo de ~18px, sin ALL CAPS */
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    color: var(--ink-strong);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  /* Accesibilidad: respeta foco visible y reduced-motion (quality floor) */
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
