@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react'
 import {
   BrowserRouter,
   Routes,
@@ -17,6 +18,8 @@ import { PlanForm } from '@/features/plans/components/PlanForm'
 import { MemoriesPage } from '@/features/memories/components/MemoriesPage'
 import { usePlan } from '@/features/plans/hooks/usePlan'
 import { cn } from '@/shared/lib/utils'
+
+const InsightsPage = lazy(() => import('@/features/insights/components/InsightsPage'))
 
 /* ── Página: nuevo plan ── */
 function NewPlanPage() {
@@ -109,7 +112,7 @@ function AppHeader() {
             className="h-11 w-auto rounded-lg shrink-0 shadow-sm"
             aria-hidden="true"
           />
-          <span className="font-display text-2xl font-semibold text-secondary-foreground group-hover:text-primary transition-colors select-none">
+          <span className="hidden sm:inline font-display text-2xl font-semibold text-secondary-foreground group-hover:text-primary transition-colors select-none">
             Pibble Date
           </span>
         </Link>
@@ -141,6 +144,19 @@ function AppHeader() {
             }
           >
             Recuerdos
+          </NavLink>
+          <NavLink
+            to="/insights"
+            className={({ isActive }) =>
+              cn(
+                'px-2.5 py-1 rounded-lg text-sm font-medium transition-colors',
+                isActive
+                  ? 'bg-primary/10 text-primary'
+                  : 'text-muted-foreground hover:text-secondary-foreground',
+              )
+            }
+          >
+            Insights
           </NavLink>
         </nav>
       </div>
@@ -191,6 +207,18 @@ function AppShell() {
               <Route path="/plan/:id"        element={<PlanDetailPage />} />
               <Route path="/plan/:id/editar" element={<EditPlanPage />} />
               <Route path="/recuerdos"       element={<MemoriesPage />} />
+              <Route
+                path="/insights"
+                element={
+                  <Suspense fallback={
+                    <div className="flex justify-center py-16" role="status" aria-live="polite">
+                      <span className="text-sm text-muted-foreground">Cargando insights…</span>
+                    </div>
+                  }>
+                    <InsightsPage />
+                  </Suspense>
+                }
+              />
             </Routes>
           </motion.div>
         </AnimatePresence>
