@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useForm, useFieldArray } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { X, Plus } from 'lucide-react'
@@ -10,13 +11,6 @@ import { Button } from '@/shared/ui/button'
 import { Input } from '@/shared/ui/input'
 import { Textarea } from '@/shared/ui/textarea'
 import { Checkbox } from '@/shared/ui/checkbox'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/shared/ui/select'
 import {
   Form,
   FormControl,
@@ -32,6 +26,7 @@ interface PlanFormProps {
 }
 
 export function PlanForm({ plan, onSuccess }: PlanFormProps) {
+  const navigate = useNavigate()
   const [newStep, setNewStep] = useState('')
   const [saved, setSaved] = useState(false)
   const { upsert, isPending } = useUpsertPlan()
@@ -52,7 +47,7 @@ export function PlanForm({ plan, onSuccess }: PlanFormProps) {
           steps:           plan.steps,
           notes:           plan.notes            ?? '',
         }
-      : { title: '', status: 'idea', steps: [] },
+      : { title: '', description: '', status: 'idea', plannedFor: '', location: '', category: '', notes: '', steps: [] },
   })
 
   const { fields, append, remove } = useFieldArray({
@@ -114,45 +109,23 @@ export function PlanForm({ plan, onSuccess }: PlanFormProps) {
           )}
         />
 
-        {/* Estado + Fecha */}
-        <div className="grid gap-4 sm:grid-cols-2">
-          <FormField
-            control={form.control}
-            name="status"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Estado</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Elige un estado" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="idea">Idea</SelectItem>
-                    <SelectItem value="planned">Planeada</SelectItem>
-                    <SelectItem value="completed">Vivida</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+        {/* Status se gestiona desde el detalle — campo oculto para preservar valor */}
+        <input type="hidden" {...form.register('status')} />
 
-          <FormField
-            control={form.control}
-            name="plannedFor"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>¿Cuándo?</FormLabel>
-                <FormControl>
-                  <Input type="date" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
+        {/* Fecha */}
+        <FormField
+          control={form.control}
+          name="plannedFor"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>¿Cuándo?</FormLabel>
+              <FormControl>
+                <Input type="date" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         {/* Descripción */}
         <FormField
@@ -313,9 +286,18 @@ export function PlanForm({ plan, onSuccess }: PlanFormProps) {
               {form.formState.errors.root.message}
             </p>
           )}
-          <Button type="submit" disabled={isPending}>
-            {isPending ? 'Guardando…' : plan ? 'Guardar cambios' : 'Crear plan'}
-          </Button>
+          <div className="flex items-center gap-3">
+            <Button type="submit" disabled={isPending}>
+              {isPending ? 'Guardando…' : plan ? 'Guardar cambios' : 'Crear plan'}
+            </Button>
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={() => navigate(-1)}
+            >
+              Cancelar
+            </Button>
+          </div>
         </div>
 
       </form>
